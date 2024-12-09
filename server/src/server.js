@@ -1,38 +1,57 @@
-import "dotenv/config.js"; 
 import express from "express";
-import morgan from "morgan";
+import session from 'express-session'
+import cookieParser from "cookie-parser";
+import { initMongoDB } from "./db/connection.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import productRouter from "./routes/product.router.js";
-import userRouter from "./routes/user.router.js";
-import dbConnect from "./config/db.connection.js";
-import { Server } from "socket.io";
-import { createServer } from "http";
- 
+import passport from 'passport';
+import MongoStore from 'connect-mongo';
+import handlebars from "express-handlebars";
+import path from "path";
+import 'dotenv/config';
+import './passport/jwt.js';
+import router from "../src/routes/index.router.js";
 
 const app = express();
- 
-const PORT = process.env.PORT || 8080;
 
-// Llamada a dbConnect para iniciar la conexión a MongoDB
-
-dbConnect()
-  .then(() => console.log("Conexión exitosa a MongoDB"))
-  .catch((error) => console.log("Error al conectar a MongoDB:", error));
-
-  
-// Configuración del servidor
-const httpServer = createServer(app);
-httpServer.listen(PORT, () => {
-  console.log(`Server ready on port ${PORT}`);
-});
+const storeConfig = {
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_DB_LINK,
+    crypto: { secret: process.env.SECRET_KEY },
+    ttl: 180,
+  }),
+  secret: process.env.SECRET_KEY,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { maxAge: 180000 }
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
 
-app.use("/products", productRouter);
-app.use("/users", userRouter);
-app.use(errorHandler); 
+app.use(cookieParser());
+app.use(session(storeConfig));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 
-  
+app.use("/public", express.static("public"));
+
+
+app.use(router);
+
+app.engine("handlebars", handlebars.engine());
+app.set("views", path.join(process.cwd(), "src", "views"));
+app.set("view engine", "handlebars");
+
+
+app.use(errorHandler);
+
+
+initMongoDB().then(() => console.log('base de datos coenctada'))
+  .catch((error) => console.log(error))
+
+const PORT = 8080;
+app.listen(PORT, () => {
+  console.log(`Escuchando al puerto ${PORT}`);
+});

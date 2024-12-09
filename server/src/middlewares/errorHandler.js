@@ -1,4 +1,11 @@
 export const errorHandler = (error, req, res, next) => {
-    console.log(error);
-    res.status(500).json({ message: error.message });
-  };
+  console.log(error);
+  const status = error.statusCode || 500;
+  res.status(status).json({
+    status,
+    error: error.name,
+    message: error.message,
+    path: req.url
+  });
+  
+};

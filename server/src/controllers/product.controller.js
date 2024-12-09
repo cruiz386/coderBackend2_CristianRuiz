@@ -1,41 +1,84 @@
-import prodManager from "../managers/product.manager.js";
+import Controllers from "./controller.manager.js";
+import { prodService } from "../services/product.service.js";
+import { userService } from "../services/user.service.js";
 
-export const createProduct = async (req, res) => {
-  try {
-    // console.log(req.body);
-    const response = await prodManager.create(req.body);
-    res.json(response);
-  } catch (error) {
-    next(error);
+class ProductController extends Controllers {
+  constructor() {
+    super(prodService);
   }
-};
 
-export const getAllProducts = async (req, res, next) => {
-  try {
-    // res.send('hola')
-    // res.json({ nombre: "Juan" });
-    // res.redirect('/')
-    // res.render('plantilla')
-    // res.status(404).json({msg: 'Error'})
-    // throw new Error('Error loading')
-    // console.log(req.query);
-    const products = await prodManager.getAll();
-    const { value } = req.query;
-    const prodFilter = products.filter((p) => p.price < parseInt(value));
-    if (!value) return res.json(products);
-    res.json(prodFilter);
-    // PRECIO MENOR A: ___ |BUSCAR| --> GET /products
-  } catch (error) {
-    next(error);
-  }
-};
+  getAllProducts = async (req, res, next) => {
+    try {
+      const products = await this.service.getAll();
+      const { value } = req.query;
 
-export const getProdById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const prod = await prodManager.getById(id);
-    res.json(prod);
-  } catch (error) {
-    next(error);
-  }
-};
+
+      const filteredProducts = value
+        ? products.filter((p) => p.price < parseInt(value, 10))
+        : products;
+
+      res.json(filteredProducts);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  getProductById = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const product = await this.service.getById(id);
+      res.json(product);
+    } catch (error) {
+      next(error);
+    }
+  };
+  createProduct = async (req, res, next) => {
+    try {
+      const product = await this.service.create(req.body);
+      res.json(product);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  updateProductById = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const product = await this.service.update(id, req.body);
+      res.json(product);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  deleteProductById = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const product = await this.service.delete(id);
+      res.json(product);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  showProducts = async (req, res, next) => {
+    try {
+      const products = await this.service.getAll();
+      const { value } = req.query;
+
+      const filteredProducts = value
+        ? products.filter((p) => p.price < parseInt(value, 10))
+        : products;
+
+
+      const mapFilteredProducts = filteredProducts.map((p) => p.toObject());
+      res.render("products", { products: mapFilteredProducts });
+
+    } catch (error) {
+      next(error);
+    }
+  };
+
+}
+
+export const productController = new ProductController();

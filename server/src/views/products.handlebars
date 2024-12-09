@@ -1,0 +1,47 @@
+<h2 style="text-align: center; font-size: 28px; margin: 20px 0; color: #333;">Product List</h2>
+<div style="
+  display: flex; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 20px; 
+  padding: 20px; 
+  font-family: Arial, sans-serif;
+">
+  {{#each products}}
+  <div style="
+    width: 300px; 
+    border: 1px solid #ddd; 
+    border-radius: 10px; 
+    padding: 15px; 
+    background-color: #f9f9f9; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    text-align: center;
+  ">
+    <img 
+      src="{{this.photo}}" 
+      alt="{{this.title}}" 
+      style="width: 100%; height: auto; border-radius: 5px; margin-bottom: 15px;"
+    />
+    <h3 style="font-size: 18px; margin: 10px 0; color: #333;">{{this.title}}</h3>
+    <p style="font-size: 14px; color: #666; margin: 10px 0;">Category: <strong>{{this.category}}</strong></p>
+    <p style="font-size: 16px; color: #333; margin: 10px 0;">Price: <strong>${{this.price}}</strong></p>
+    <p style="font-size: 14px; color: #666; margin: 10px 0;">Stock: <strong>{{this.stock}}</strong></p>
+    
+    <button onclick="location.href='/cart/{{this.id}}'" style="
+      display: block;   
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: #fff;  
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      font-family: Arial, sans-serif; 
+    ">add to cart</button>
+  </div>
+  {{/each}}
+</div>
