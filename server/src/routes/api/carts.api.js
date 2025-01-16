@@ -1,14 +1,17 @@
+
 import { Router } from "express";
-import {create, destroy, read, readAll, update, calculateTotal} from "../../controllers/cart.controller.js"; 
+import  CartController  from "../../controllers/cart.controller.js";
 
-const cartsApiRouter = Router();
- 
+const cartRouter = Router();
+const cartController = new CartController();
 
-cartsApiRouter.post("/", create);
-cartsApiRouter.get("/", readAll);
-cartsApiRouter.get("/:cid", read);
-cartsApiRouter.put("/:cid", update);
-cartsApiRouter.delete("/:cid", destroy);
-cartsApiRouter.get("/total/:uid", calculateTotal);
+cartRouter.post("/", cartController.createCart); 
+cartRouter.get("/:cartId", cartController.getCart);
+cartRouter.post("/:cartId/product", cartController.addProduct); 
+cartRouter.delete("/:cartId/product/:productId", cartController.removeProduct); 
+cartRouter.delete("/:cartId", cartController.clearCart); 
 
-export default cartsApiRouter; 
+
+cartRouter.post("/:cartId/purchase", cartController.purchaseCart);
+
+export default cartRouter;

@@ -5,6 +5,10 @@ class ProductDaoMongo extends MongoDao {
     constructor(){
         super(ProductModel);
     }
+
+    async getProductById(productId) {
+        return await ProductModel.findById(productId);
+    }
  
     
 };

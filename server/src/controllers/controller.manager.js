@@ -8,8 +8,8 @@ export default class Controllers {
             const response = await this.service.getAll().lean();
             res.json(response);
         } catch (error) {
-            next(error); 
-        } 
+            next(error);
+        }
     }
 
     async getById(req, res, next) {

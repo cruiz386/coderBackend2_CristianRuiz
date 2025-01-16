@@ -29,6 +29,8 @@ class UserDaoMongo extends MongoDao {
       throw new Error(error);
     }
   }
+
+  
 }
 
 export const userDao = new UserDaoMongo();

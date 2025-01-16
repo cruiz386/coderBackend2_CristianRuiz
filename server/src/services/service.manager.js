@@ -29,9 +29,9 @@ export default class Services {
         throw new Error(error);
       }
     }
-    async delete(id) {
+    async delete(uid) {
       try {
-        const response = await this.dao.delete(id);
+        const response = await this.dao.delete(uid);
         if (!response) throw new Error("Error delete");
         return response;
       } catch (error) {

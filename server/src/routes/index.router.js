@@ -6,6 +6,7 @@ const router = Router()
 
 router.use('/api', apiRouter)
 router.use('/', viewsRouter)
+ 
 
 
 export default router

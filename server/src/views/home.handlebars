@@ -1,5 +1,3 @@
-
-
 <h2 style="text-align: center; font-size: 28px; margin: 20px 0; color: #333;">Product List</h2>
 <div style="
   display: flex; 
@@ -29,21 +27,7 @@
     <p style="font-size: 16px; color: #333; margin: 10px 0;">Price: <strong>${{this.price}}</strong></p>
     <p style="font-size: 14px; color: #666; margin: 10px 0;">Stock: <strong>{{this.stock}}</strong></p>
     
-    <button onclick="location.href='/cart/{{this.id}}'" style="
-      display: block;   
-      width: 100%;
-      padding: 10px;
-      background-color: #28a745;
-      color: #fff;  
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      text-align: center;
-      transition: background-color 0.3s ease;
-      font-family: Arial, sans-serif; 
-    ">add to cart</button>
+
   </div>
   {{/each}}
 </div>

@@ -37,7 +37,7 @@ class UserService extends Services {
       const existUser = await this.getUserByEmail(email);
       if (existUser) throw new Error("User already exists");
 
-      const cart = await cartService.create()
+      const cart = await cartService.createCart()
       const newUser = await this.dao.register({
         ...user,
         password: createHash(password),
@@ -61,6 +61,8 @@ class UserService extends Services {
       throw error;
     }
   };
+
+
 }
 
 export const userService = new UserService();

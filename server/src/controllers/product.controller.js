@@ -1,6 +1,6 @@
 import Controllers from "./controller.manager.js";
 import { prodService } from "../services/product.service.js";
-import { userService } from "../services/user.service.js";
+
 
 class ProductController extends Controllers {
   constructor() {

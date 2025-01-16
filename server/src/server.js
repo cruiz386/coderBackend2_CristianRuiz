@@ -27,17 +27,11 @@ const storeConfig = {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
 app.use(session(storeConfig));
-
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 app.use("/public", express.static("public"));
-
-
 app.use(router);
 
 app.engine("handlebars", handlebars.engine());
@@ -48,10 +42,11 @@ app.set("view engine", "handlebars");
 app.use(errorHandler);
 
 
-initMongoDB().then(() => console.log('base de datos coenctada'))
+
+initMongoDB().then(() => console.log('MongoDB connected'))
   .catch((error) => console.log(error))
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Escuchando al puerto ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
